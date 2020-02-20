@@ -1,0 +1,35 @@
+question 1-
+select schools.name,count(*) as total_students from schools inner join students on schools.id=students.school_id where schools.is_deleted=0 group by schools.id;
+
+modified:::::: select schools.name,schools.id,students.school_id,count(*) as total_students from schools left join students on schools.id=students.school_id where schools.is_deleted=0 group by id;
+
+
+
+
+
+question no-2:
+select students.first_name,students.id,group_concat(distinct finance_fee_collections.name order by finance_fee_collections.name asc separator ', ') from finance_fees inner join finance_fee_collections on finance_fees.fee_collection_id=finance_fee_collections.id inner join students on finance_fees.student_id=students.id inner join schools on students.school_id=schools.id where schools.id=3 and (students.has_paid_fees=0 or finance_fees.is_paid=0) group by students.id;
+
+
+modified:::::select students.first_name,students.id,group_concat(distinct finance_fee_collections.name order by finance_fee_collections.name asc separator ', ') from finance_fees right join finance_fee_collections on finance_fees.fee_collection_id=finance_fee_collections.id right join students on finance_fees.student_id=students.id inner join schools on students.school_id=schools.id where schools.id=6 and students.has_paid_fees=0 group by students.id order by students.id asc;
+
+
+
+
+
+question no. 3 
+select concat(first_name,middle_name,last_name) as name,count(*) as total_absentees from schools inner join students on schools.id=students.school_id inner join attendances on students.id=attendances.student_id where schools.id=2 and (attendances.forenoon=0 or attendances.afternoon=0) group by students.id order by total_absentees desc;
+
+modified::::::::select concat(first_name,middle_name,last_name) as name,count(*) as total_absentees from students inner join attendances on students.id=attendances.student_id where students.school_id=4 and (attendances.forenoon=0 or attendances.afternoon=0) group by students.id order by total_absentees desc;
+
+
+
+
+question 4:
+ select concat(first_name,' ',middle_name,' ',last_name) as Student_name,sum(marks) from exam_groups inner join exams on exam_groups.id=exams.exam_group_id inner join exam_scores on exams.id=exam_scores.exam_id inner join students on exam_scores.student_id=students.id where exam_groups.id=4 group by student_id order by marks desc;
+
+question 5:
+select courses.id,course_name,group_concat(subjects.name order by subjects.name separator '  ') from schools inner join courses on schools.id=courses.school_id inner join batches on courses.id=batches.course_id inner join subjects on batches.id=subjects.batch_id where schools.id=3 group by subjects.batch_id;
+
+
+
